@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snappy Bot</title>
+    <style>
+        :root {
+            --primary: #000;
+            --secondary: #fff;
+            --accent: #888;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--secondary);
+            color: var(--primary);
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 40px 0;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 40px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+        
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: var(--primary);
+            position: relative;
+            padding: 5px 0;
+            transition: var(--transition);
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        section {
+            padding: 60px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-align: center;
+        }
+        
+        .review-card, .news-card, .faq-item {
+            background-color: rgba(0, 0, 0, 0.03);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        .review-card:hover, .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .review-author {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .review-date, .news-date {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .faq-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            cursor: pointer;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .faq-question:before {
+            content: '+';
+            position: absolute;
+            left: 0;
+            transition: var(--transition);
+        }
+        
+        .faq-question.active:before {
+            content: '-';
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-left: 25px;
+        }
+        
+        .faq-answer.show {
+            max-height: 500px;
+            margin-bottom: 15px;
+        }
+        
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--accent);
+            background-color: var(--secondary);
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        button:hover {
+            opacity: 0.8;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Snappy Bot</h1>
+            <p class="subtitle">Умный помощник в Telegram</p>
+        </header>
+        
+        <nav>
+            <a href="#reviews">Отзывы</a>
+            <a href="#news">Новости</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Оставить отзыв</a>
+        </nav>
+        
+        <section id="reviews">
+            <h2>Отзывы пользователей</h2>
+            
+            <div class="review-card">
+                <div class="review-author">Growbroniga 122333</div>
+                <div class="review-date">15 апреля 2025</div>
+                <div class="review-text">Написал мне тост для Канье Веста, тот ответил. Спасибо</div>
+            </div>
+            
+            <div class="review-card">
+                <div class="review-author">имя</div>
+                <div class="review-date">27 апреля 2025</div>
+                <div class="review-text">юзфул, но иногда не работает(((</div>
+            </div>
+            
+            <div class="review-card">
+                <div class="review-author">Алик</div>
+                <div class="review-date">10 мая 2025</div>
+                <div class="review-text">Быстро отвечает</div>
+            </div>
+            
+            <div class="review-card">
+                <div class="review-author">Мария Сидорова</div>
+                <div class="review-date">22 мая 2025</div>
+                <div class="review-text">Оптимизирует работу копирайтера</div>
+            </div>
+        </section>
+        
+        <section id="news">
+            <h2>Новости и обновления</h2>
+            
+            <div class="news-card">
+                <h3>Первая версия 1.0</h3>
+                <div class="news-date">11 апреля 2025</div>
+                <div class="news-text">Бот доступен в сети!</div>
+            </div>
+            
+            <div class="news-card">
+                <h3>Новая версия! 1.6</h3>
+                <div class="news-date">22 апреля 2025</div>
+                <div class="news-text">Обновили модель бота, теперь он отвечает быстрее и меньше ошибается.</div>
+            </div>
+            
+            <div class="news-card">
+                <h3>Бот теперь доступен 24/7</h3>
+                <div class="news-date">15 мая 2025</div>
+                <div class="news-text">Мы переехали на новый сервер, что обеспечило бесперебойную работу бота круглосуточно.</div>
+            </div>
+        </section>
+        
+        <section id="faq">
+            <h2>Частые вопросы</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Есть ли у вас телеграм канал?</div>
+                <div class="faq-answer">
+                    <p>Нет, из-за ряда причин на данный момент создание телеграм канала является для нас не рациональным решением.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Как начать использовать бота?</div>
+                <div class="faq-answer">
+                    <p>Просто найдите бота в Telegram по имени @SnappyText_bot и начните диалог. Бот предложит вам инструкции по использованию.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Есть ли платные функции?</div>
+                <div class="faq-answer">
+                    <p>На данном этапе весь функционал бота полностью бесплатный. </p>
+                </div>
+            </div>
+            
+            <!-- Вы сможете добавить больше вопросов позже -->
+        </section>
+        
+        <section id="contact">
+            <h2>Оставить отзыв</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email (необязательно)</label>
+                    <input type="email" id="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="review">Ваш отзыв</label>
+                    <textarea id="review" rows="5" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rating">Оценка</label>
+                    <select id="rating">
+                        <option value="5">Отлично</option>
+                        <option value="4">Хорошо</option>
+                        <option value="3">Удовлетворительно</option>
+                        <option value="2">Плохо</option>
+                        <option value="1">Очень плохо</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Отправить</button>
+            </form>
+        </section>
+        
+        <footer>
+            <p>© 2023 Название вашего бота. Все права защищены.</p>
+            <p>Связь с разработчиком: @ya_mr_roman</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Плавное появление секций при скролле
+        const sections = document.querySelectorAll('section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Работа с FAQ
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                question.classList.toggle('active');
+                
+                if (answer.classList.contains('show')) {
+                    answer.classList.remove('show');
+                } else {
+                    answer.classList.add('show');
+                }
+            });
+        });
+        
+        // Плавная навигация
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
